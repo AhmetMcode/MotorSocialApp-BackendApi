@@ -1,5 +1,6 @@
 using MotorSocialApp.Persistence;
 using MotorSocialApp.Application;
+using MotorSocialApp.Infrastructure;
 using MotorSocialApp.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ builder.Configuration.SetBasePath(env.ContentRootPath)
     .AddJsonFile($"appsettigs.{env.EnvironmentName}.json", optional: true);
 
 builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddCustomMapper();
 

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\MotorSocialApp.Mapper\MotorSocialApp.Mapper.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\MotorSocialApp.Infrastructure\MotorSocialApp.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\MotorSocialApp.Persistence\MotorSocialApp.Persistence.csproj" />
   </ItemGroup>
 
