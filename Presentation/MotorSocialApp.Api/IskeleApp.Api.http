@@ -1,0 +1,6 @@
+@MotorSocialApp.Api_HostAddress = http://localhost:5267
+
+GET {{MotorSocialApp.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
