@@ -7,13 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.10.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="SendGrid" Version="9.29.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Features\CariIslems\Command\" />
+    <Folder Include="Features\CariIslems\Exceptions\" />
+    <Folder Include="Features\CariIslems\Rules\" />
   </ItemGroup>
 
   <ItemGroup>
