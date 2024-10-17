@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MotorSocialApp.Application.Features.CariIslems.Queries.GetAllCariIslems;
 
@@ -16,6 +17,7 @@ namespace MotorSocialApp.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllProducts()
         {
             var response = await mediator.Send(new GetAllCariIslemsQueryRequest());

@@ -5,8 +5,11 @@ using MotorSocialApp.Application.Exceptions;
 using System.Globalization;
 using MediatR;
 using MotorSocialApp.Application.Beheviors;
-//using MotorSocialApp.Application.Features.CariIslems.Rules;
+//using MotorSocialApp.Application.Features.Products.Rules;
 using MotorSocialApp.Application.Bases;
+using MotorSocialApp.Application.Bases;
+using MotorSocialApp.Application.Beheviors;
+using MotorSocialApp.Application.Exceptions;
 
 namespace MotorSocialApp.Application
 {
@@ -22,10 +25,11 @@ namespace MotorSocialApp.Application
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
 
-            //services.AddValidatorsFromAssemblyContaining<BaseRules>(assembly);
+            //services.AddValidatorsFromAssembly(assembly);
             //ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("tr");
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(FluentValidationBehevior<,>));
+
         }
 
         private static IServiceCollection AddRulesFromAssemblyContaining(
