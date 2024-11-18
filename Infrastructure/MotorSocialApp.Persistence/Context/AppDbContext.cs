@@ -23,12 +23,13 @@ namespace MotorSocialApp.Persistence.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            // Tüm entity configurasyonlarını uygula
+            // Tüm entity konfigurasyonlarını uygula
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-            // Global Soft Delete Filter (IsDeleted özelliği için)
+            // Global Soft Delete Filter
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
+                // IEntityBase'i uygulayan entity'lere filtre uygula
                 if (typeof(IEntityBase).IsAssignableFrom(entityType.ClrType))
                 {
                     var parameter = Expression.Parameter(entityType.ClrType, "e");
@@ -46,7 +47,7 @@ namespace MotorSocialApp.Persistence.Context
                     modelBuilder.Entity(entityType.ClrType).HasQueryFilter(filter);
                 }
             }
-
         }
+
     }
 }

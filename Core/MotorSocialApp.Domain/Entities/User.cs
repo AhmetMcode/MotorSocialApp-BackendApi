@@ -15,6 +15,7 @@ namespace MotorSocialApp.Domain.Entities
         public string? ProfilePhotoPath { get; set; }
         public string? Bio { get; set; }
         public int Rating { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         // Navigasyon özellikleri
         public ICollection<UserPhoto> Photos { get; set; } = new List<UserPhoto>();
