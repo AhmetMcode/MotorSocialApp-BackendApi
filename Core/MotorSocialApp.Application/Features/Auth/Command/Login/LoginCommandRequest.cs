@@ -7,7 +7,7 @@ namespace MotorSocialApp.Application.Features.Auth.Command.Login
     {
         [DefaultValue("99harkan@gmail.com")]
         public string Email { get; set; }
-        [DefaultValue("Hakan12.")]
+        [DefaultValue("Confidence99.")]
         public string Password { get; set; }
     }
 }

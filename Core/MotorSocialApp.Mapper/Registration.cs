@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-
+using MotorSocialApp.Application.Interfaces.AutoMapper;
 
 namespace MotorSocialApp.Mapper
 {
@@ -7,7 +7,7 @@ namespace MotorSocialApp.Mapper
     {
         public static void AddCustomMapper(this IServiceCollection services)
         {
-            services.AddSingleton<MotorSocialApp.Application.Interfaces.AutoMapper.IMapper, MotorSocialApp.Mapper.AutoMapper.Mapper>();
+            services.AddSingleton<IMapper, AutoMapper.Mapper>();
         }
     }
 }

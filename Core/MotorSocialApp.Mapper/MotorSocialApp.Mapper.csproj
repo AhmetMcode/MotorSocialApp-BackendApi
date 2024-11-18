@@ -15,6 +15,10 @@
     <ProjectReference Include="..\MotorSocialApp.Application\MotorSocialApp.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AutoMapper\" />
+  </ItemGroup>
+
 
 
 </Project>

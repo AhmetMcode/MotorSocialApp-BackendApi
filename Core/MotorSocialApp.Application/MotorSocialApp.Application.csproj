@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.10.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
@@ -17,13 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\CariIslems\Command\" />
-    <Folder Include="Features\CariIslems\Exceptions\" />
-    <Folder Include="Features\CariIslems\Rules\" />
+    <ProjectReference Include="..\MotorSocialApp.Domain\MotorSocialApp.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MotorSocialApp.Domain\MotorSocialApp.Domain.csproj" />
+    <Folder Include="Features\Post\Rules\" />
+    <Folder Include="Features\Post\Exceptions\" />
+    <Folder Include="Interfaces\AutoMapper\" />
   </ItemGroup>
 
 </Project>
