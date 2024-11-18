@@ -1,16 +1,23 @@
+using Serilog;
 using MotorSocialApp.Persistence;
 using MotorSocialApp.Application;
 using MotorSocialApp.Infrastructure;
-using MotorSocialApp.Mapper;
 using MotorSocialApp.Application.Exceptions;
 using Microsoft.OpenApi.Models;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Serilog yapýlandýrmasýný ekleyin
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
 
+// Serilog'u ASP.NET Core'a ekleyin
+builder.Host.UseSerilog();
+
+// Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -21,12 +28,12 @@ var env = builder.Environment;
 
 builder.Configuration.SetBasePath(env.ContentRootPath)
     .AddJsonFile("appsettings.json", optional: false)
-    .AddJsonFile($"appsettigs.{env.EnvironmentName}.json", optional: true);
+    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
-builder.Services.AddCustomMapper();
+
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -53,9 +60,11 @@ builder.Services.AddSwaggerGen(c =>
             },
             Array.Empty<string>()
         }
-
     });
 });
+
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -67,7 +76,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.ConfigureExceptionHandlingMiddleware();
-app.UseAuthorization();
+
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthentication(); // Authentication önce
+app.UseAuthorization(); // Authorization sonra
 
 app.MapControllers();
 

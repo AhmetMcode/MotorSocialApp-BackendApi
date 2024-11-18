@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using MotorSocialApp.Application.Bases;
 using MotorSocialApp.Application.Features.Auth.Rules;
-using MotorSocialApp.Application.Interfaces.AutoMapper;
 using MotorSocialApp.Application.Interfaces.UnitOfWorks;
 using MotorSocialApp.Domain.Entities;
 
@@ -15,17 +15,19 @@ namespace MotorSocialApp.Application.Features.Auth.Command.Register
         private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
 
-        public RegisterCommandHandler(AuthRules authRules, UserManager<User> userManager, RoleManager<Role> roleManager, IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor) : base(mapper, unitOfWork, httpContextAccessor)
+        public RegisterCommandHandler(IMapper mapper, AuthRules authRules, UserManager<User> userManager, RoleManager<Role> roleManager, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor) : base(mapper, unitOfWork, httpContextAccessor)
         {
             this.authRules = authRules;
             this.userManager = userManager;
             this.roleManager = roleManager;
         }
+
         public async Task<Unit> Handle(RegisterCommandRequest request, CancellationToken cancellationToken)
         {
+
             await authRules.UserShouldNotBeExist(await userManager.FindByEmailAsync(request.Email));
 
-            User user = mapper.Map<User, RegisterCommandRequest>(request);
+            User user = mapper.Map<User>(request);
             user.UserName = request.Email;
             user.SecurityStamp = Guid.NewGuid().ToString();
 

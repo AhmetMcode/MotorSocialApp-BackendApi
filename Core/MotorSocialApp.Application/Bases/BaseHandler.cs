@@ -1,4 +1,4 @@
-﻿using MotorSocialApp.Application.Interfaces.AutoMapper;
+﻿using AutoMapper;
 using MotorSocialApp.Application.Interfaces.UnitOfWorks;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;

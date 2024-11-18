@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
+using MotorSocialApp.Application.Features.Auth.Exceptions;
 using SendGrid.Helpers.Errors.Model;
 
 namespace MotorSocialApp.Application.Exceptions
@@ -33,7 +34,7 @@ namespace MotorSocialApp.Application.Exceptions
 
             List<string> errors = new()
             {
-                $"Hata Mesajı : {exception.Message}"
+                $"{exception.Message}"
             };
 
             return httpContext.Response.WriteAsync(new ExceptionModel

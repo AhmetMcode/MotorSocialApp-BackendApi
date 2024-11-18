@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MotorSocialApp.Application.Bases;
-using MotorSocialApp.Application.Interfaces.AutoMapper;
 using MotorSocialApp.Application.Interfaces.UnitOfWorks;
 using MotorSocialApp.Domain.Entities;
 

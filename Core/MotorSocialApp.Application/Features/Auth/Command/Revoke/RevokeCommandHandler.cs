@@ -3,18 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using MotorSocialApp.Application.Bases;
 using MotorSocialApp.Application.Features.Auth.Rules;
-using MotorSocialApp.Application.Interfaces.AutoMapper;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MotorSocialApp.Application.Bases;
-using MotorSocialApp.Application.Features.Auth.Rules;
-using MotorSocialApp.Application.Interfaces.AutoMapper;
 using MotorSocialApp.Application.Interfaces.UnitOfWorks;
 using MotorSocialApp.Domain.Entities;
+using AutoMapper;
 
 namespace MotorSocialApp.Application.Features.Auth.Command.Revoke
 {
