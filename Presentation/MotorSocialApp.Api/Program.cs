@@ -4,7 +4,8 @@ using MotorSocialApp.Application;
 using MotorSocialApp.Infrastructure;
 using MotorSocialApp.Application.Exceptions;
 using Microsoft.OpenApi.Models;
-
+using Microsoft.AspNetCore.SignalR;
+using MotorSocialApp.Api.Hubs; // SignalR için gerekli
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
+// SignalR Servisini Ekleyin
+builder.Services.AddSignalR();
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -63,7 +66,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -81,6 +83,9 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication(); // Authentication önce
 app.UseAuthorization(); // Authorization sonra
+
+// SignalR için Hub Endpoint'i Ekleyin
+app.MapHub<ExploreHubService>("/exploreHub");
 
 app.MapControllers();
 

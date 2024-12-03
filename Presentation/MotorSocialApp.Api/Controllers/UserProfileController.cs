@@ -37,7 +37,7 @@ namespace MotorSocialApp.Api.Controllers
         }
 
         [Authorize]
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> UpdateProfile([FromForm] UpdateProfileCommandRequest request)
         {
             try

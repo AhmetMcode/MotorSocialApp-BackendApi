@@ -13,9 +13,10 @@ namespace MotorSocialApp.Persistence.Context
         public DbSet<UserPhoto> UserPhotos { get; set; }
         public DbSet<UserFollower> UserFollowers { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<PostCategory> PostCategories { get; set; }
+       
         public DbSet<PostComment> PostComments { get; set; }
         public DbSet<PostLike> PostLikes { get; set; }
+        public DbSet<PostCategoryFormFile> PostCategories { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options) { }
 

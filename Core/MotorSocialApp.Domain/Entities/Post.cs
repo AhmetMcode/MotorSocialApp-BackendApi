@@ -15,7 +15,7 @@ namespace MotorSocialApp.Domain.Entities
         public string PostLocation { get; set; } // Konum bilgisi
 
         public int PostCategoryId { get; set; } // Kategori ID'si
-        public PostCategory PostCategory { get; set; } // Kategori ile ilişki
+        public PostCategoryFormFile PostCategory { get; set; } // Kategori ile ilişki
 
         public ICollection<PostComment> Comments { get; set; } = new List<PostComment>(); // Yorumlar
         public ICollection<PostLike> Likes { get; set; } = new List<PostLike>(); // Beğeniler

@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Post\Exceptions\**" />
+    <Compile Remove="Features\Post\Rules\**" />
+    <EmbeddedResource Remove="Features\Post\Exceptions\**" />
+    <EmbeddedResource Remove="Features\Post\Rules\**" />
+    <None Remove="Features\Post\Exceptions\**" />
+    <None Remove="Features\Post\Rules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
@@ -22,8 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Post\Rules\" />
-    <Folder Include="Features\Post\Exceptions\" />
     <Folder Include="Interfaces\AutoMapper\" />
   </ItemGroup>
 

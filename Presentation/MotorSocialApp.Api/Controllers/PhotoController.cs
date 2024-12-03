@@ -38,7 +38,7 @@ namespace MotorSocialApp.API.Controllers
             var result = await _mediator.Send(new GetUserPhotosRequest { UserId = userId });
             if (result.IsSuccess)
             {
-                return Ok(result.PhotoPaths);
+                return Ok(result);
             }
             return BadRequest(result.Message);
         }

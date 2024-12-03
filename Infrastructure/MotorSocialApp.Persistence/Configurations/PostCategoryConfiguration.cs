@@ -4,16 +4,16 @@ using MotorSocialApp.Domain.Entities;
 
 namespace MotorSocialApp.Persistence.Configurations
 {
-    public class PostCategoryConfiguration : IEntityTypeConfiguration<PostCategory>
+    public class PostCategoryConfiguration : IEntityTypeConfiguration<PostCategoryFormFile>
     {
-        public void Configure(EntityTypeBuilder<PostCategory> builder)
+        public void Configure(EntityTypeBuilder<PostCategoryFormFile> builder)
         {
             // Tablonun yapılandırması
-            builder.Property(pc => pc.Name)
+            builder.Property(pc => pc.CategoryName)
                    .IsRequired()
                    .HasMaxLength(50);
 
-            builder.Property(pc => pc.IconPath)
+            builder.Property(pc => pc.PhotoPath)
                    .IsRequired()
                    .HasMaxLength(250);
 
@@ -23,33 +23,7 @@ namespace MotorSocialApp.Persistence.Configurations
                    .HasForeignKey(p => p.PostCategoryId)
                    .OnDelete(DeleteBehavior.Cascade); // Cascade ayarı
 
-            // Seed Data
-            builder.HasData(
-                new PostCategory
-                {
-                    Id = 1,
-                    Name = "Voleybol",
-                    IconPath = "assets/svg/volleyball.svg",
-                    CreatedDate = DateTime.UtcNow,
-                    IsDeleted = false
-                },
-                new PostCategory
-                {
-                    Id = 2,
-                    Name = "Patiler",
-                    IconPath = "assets/svg/paw.svg",
-                    CreatedDate = DateTime.UtcNow,
-                    IsDeleted = false
-                },
-                new PostCategory
-                {
-                    Id = 3,
-                    Name = "Duyuru",
-                    IconPath = "assets/svg/megaphone.svg",
-                    CreatedDate = DateTime.UtcNow,
-                    IsDeleted = false
-                }
-            );
+            
         }
     }
 }

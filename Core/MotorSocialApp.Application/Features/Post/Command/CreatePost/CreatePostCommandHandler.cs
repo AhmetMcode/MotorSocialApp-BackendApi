@@ -5,7 +5,7 @@ using PostEntity = MotorSocialApp.Domain.Entities.Post;
 
 namespace MotorSocialApp.Application.Features.Post.Command.CreatePost
 {
-    public class CreatePostCommandHandler : IRequestHandler<CreatePostCommandRequest, CreatePostCommandResponse>
+    public class CreatePostCommandHandler : IRequestHandler<CreatePostCommandRequest>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -16,7 +16,7 @@ namespace MotorSocialApp.Application.Features.Post.Command.CreatePost
             _mapper = mapper;
         }
 
-        public async Task<CreatePostCommandResponse> Handle(CreatePostCommandRequest request, CancellationToken cancellationToken)
+        public async Task Handle(CreatePostCommandRequest request, CancellationToken cancellationToken)
         {
             var post = new PostEntity
             {
@@ -31,12 +31,6 @@ namespace MotorSocialApp.Application.Features.Post.Command.CreatePost
             // Doğru alias kullanımı
             await _unitOfWork.GetWriteRepository<PostEntity>().AddAsync(post);
             await _unitOfWork.SaveAsync();
-
-            return new CreatePostCommandResponse
-            {
-                PostId = post.Id,
-                Message = "Post successfully created."
-            };
         }
     }
 }
