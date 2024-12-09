@@ -7,6 +7,7 @@ using MediatR;
 using MotorSocialApp.Application.Beheviors;
 //using MotorSocialApp.Application.Features.Products.Rules;
 using MotorSocialApp.Application.Bases;
+using MotorSocialApp.Application.Interfaces.AutoMapper;
 
 
 namespace MotorSocialApp.Application
@@ -27,10 +28,12 @@ namespace MotorSocialApp.Application
             ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("tr");
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(FluentValidationBehevior<,>));
-
+            services.AddSingleton<IMapper, AutoMapper.Mapper>();
             services.AddAutoMapper(assembly);
 
         }
+
+   
 
         private static IServiceCollection AddRulesFromAssemblyContaining(
             this IServiceCollection services,

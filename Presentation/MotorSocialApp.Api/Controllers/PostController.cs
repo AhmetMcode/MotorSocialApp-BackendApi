@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.WebSockets;
-
+using MotorSocialApp.Api.Hubs;
 using MotorSocialApp.Application.Features.Post.Command.CreatePost;
 using MotorSocialApp.Application.Features.Post.Queries.GetAllPost;
 using MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts;
+using MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPostsByCategoryId;
 using MotorSocialApp.Domain.Entities;
 using Newtonsoft.Json;
 
@@ -19,12 +20,12 @@ namespace MotorSocialApp.Api.Controllers
     public class PostController : ControllerBase
     {
         private readonly IMediator _mediator;
-       
+        //private readonly IHubContext<ExploreHubService> _hubContext;
 
         public PostController(IMediator mediator)
         {
             _mediator = mediator;
-           
+            //this._hubContext = hubContext;
         }
 
         [Authorize]
@@ -35,8 +36,19 @@ namespace MotorSocialApp.Api.Controllers
             try
             {
                 await _mediator.Send(request);
-               
-               
+
+                //// SignalR üzerinden istemcilere bildir
+                //await _hubContext.Clients.All.SendAsync("ReceivePost", new
+                //{
+                //    UserId = request.UserId,
+                //    PostContentTitle = request.PostContentTitle,
+                //    PostContent = request.PostContent,
+                //    PostDate = DateTime.UtcNow, // Post'un oluşturulma zamanı
+                //    PostLocation = request.PostLocation,
+                //    PostCategoryId = request.PostCategoryId
+                //});
+
+
                 return Ok();
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
@@ -67,6 +79,20 @@ namespace MotorSocialApp.Api.Controllers
             {
                 Page = page,
                
+            };
+
+            var result = await _mediator.Send(request);
+
+            return Ok(result);
+        }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetPaginatedPostsByCategoryId(int page = 1,int categoryId=0)
+        {
+            var request = new GetPaginatedPostsByCategoryIdQueryRequest
+            {
+                Page = page,
+                CategoryId = categoryId
             };
 
             var result = await _mediator.Send(request);

@@ -31,7 +31,7 @@ namespace MotorSocialApp.API.Controllers
             return BadRequest(result);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUserPhotos(Guid userId)
         {

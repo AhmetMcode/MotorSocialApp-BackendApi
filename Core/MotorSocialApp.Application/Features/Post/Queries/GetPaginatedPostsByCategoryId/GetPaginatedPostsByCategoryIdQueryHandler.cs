@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts;
 using MotorSocialApp.Application.Interfaces.UnitOfWorks;
 using MotorSocialApp.Domain.Entities;
 using System;
@@ -6,22 +7,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts.GetPaginatedPostsQueryResponse;
 using PostEntity = MotorSocialApp.Domain.Entities.Post;
-namespace MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts
+namespace MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPostsByCategoryId
 {
-    public class GetPaginatedPostsQueryHandler : IRequestHandler<GetPaginatedPostsQueryRequest, GetPaginatedPostsQueryResponse>
+    public class GetPaginatedPostsByCategoryIdQueryHandler : IRequestHandler<GetPaginatedPostsByCategoryIdQueryRequest, GetPaginatedPostsByCategoryIdQueryResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public GetPaginatedPostsQueryHandler(IUnitOfWork unitOfWork)
+        public GetPaginatedPostsByCategoryIdQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GetPaginatedPostsQueryResponse> Handle(GetPaginatedPostsQueryRequest request, CancellationToken cancellationToken)
+        public async Task<GetPaginatedPostsByCategoryIdQueryResponse> Handle(GetPaginatedPostsByCategoryIdQueryRequest request, CancellationToken cancellationToken)
         {
-            var query =await _unitOfWork.GetReadRepository<PostEntity>().GetAllAsync(orderBy:x=>x.OrderByDescending(p=>p.PostDate)); // Veritabanından Post verilerini alıyoruz
+            //var query = await _unitOfWork.GetReadRepository<PostEntity>().GetAllAsync(p => p.PostCategoryId == request.CategoryId); // Veritabanından Post verilerini alıyoruz
+            var query = await _unitOfWork.GetReadRepository<PostEntity>().GetAllAsync(
+                predicate: p => p.PostCategoryId == request.CategoryId,  // Koşul
+                orderBy: q => q.OrderByDescending(p => p.PostDate)                // Sıralama
+                );
+
             var totalItems = query.Count(); // Toplam kayıt sayısını hesaplıyoruz
 
             var posts = query
@@ -29,16 +34,17 @@ namespace MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts
                 .Take(20) // Sayfa başına kayıt sayısı
                 .ToList(); // Listeye dönüştürme
 
-            List<GetPaginatedPostsQueryResponse.PostDto> items = new List<GetPaginatedPostsQueryResponse.PostDto>();
+            List<GetPaginatedPostsByCategoryIdQueryResponse.PostDto> items = new List<GetPaginatedPostsByCategoryIdQueryResponse.PostDto>();
 
-            foreach (var post in posts) {
+            foreach (var post in posts)
+            {
                 var user = await _unitOfWork.GetReadRepository<User>().GetAsync(user => user.Id == post.UserId);
-                var category = await _unitOfWork.GetReadRepository<PostCategoryFormFile>().GetAsync(pc=>pc.Id==post.PostCategoryId);
-                var item = new GetPaginatedPostsQueryResponse.PostDto
+                var category = await _unitOfWork.GetReadRepository<PostCategoryFormFile>().GetAsync(pc => pc.Id == post.PostCategoryId);
+                var item = new GetPaginatedPostsByCategoryIdQueryResponse.PostDto
                 {
                     UserId = post.UserId,
                     UserFullName = user.FullName,
-                    UserPhotoPath=user.ProfilePhotoPath,
+                    UserPhotoPath = user.ProfilePhotoPath,
                     PostContentTitle = post.PostContentTitle,
                     PostContent = post.PostContent,
                     PostDate = post.PostDate,
@@ -49,7 +55,7 @@ namespace MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts
                 };
                 items.Add(item);
             }
-            var response = new GetPaginatedPostsQueryResponse
+            var response = new GetPaginatedPostsByCategoryIdQueryResponse
             {
                 CurrentPage = request.Page,
                 TotalPages = (int)Math.Ceiling(totalItems / (double)20),

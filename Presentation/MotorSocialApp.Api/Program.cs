@@ -4,7 +4,6 @@ using MotorSocialApp.Application;
 using MotorSocialApp.Infrastructure;
 using MotorSocialApp.Application.Exceptions;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.SignalR;
 using MotorSocialApp.Api.Hubs; // SignalR için gerekli
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,13 +16,13 @@ Log.Logger = new LoggerConfiguration()
 // Serilog'u ASP.NET Core'a ekleyin
 builder.Host.UseSerilog();
 
-// Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
 
 var env = builder.Environment;
 
@@ -35,9 +34,24 @@ builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
+builder.Services.AddAuthorization();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                      });
+});
 // SignalR Servisini Ekleyin
 builder.Services.AddSignalR();
 
+// Add services to the container.
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "MotorSocialApp", Version = "v1", Description = "MotorSocialApp API swagger client." });
@@ -66,27 +80,37 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddAuthorization();
+
 
 var app = builder.Build();
+// CORS Middleware'i burada
+app.UseCors();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Global hata yönetimi middleware'i en üstte
 app.ConfigureExceptionHandlingMiddleware();
 
-app.UseStaticFiles();
-app.UseRouting();
-app.UseAuthentication(); // Authentication önce
-app.UseAuthorization(); // Authorization sonra
+app.UseStaticFiles(); // Statik dosyalar
 
-// SignalR için Hub Endpoint'i Ekleyin
+app.UseRouting(); // Routing middleware
+
+
+
+// Kimlik doðrulama ve yetkilendirme
+app.UseAuthentication();
+app.UseAuthorization();
+
+// SignalR Hub Endpoint'leri
 app.MapHub<ExploreHubService>("/exploreHub");
+app.MapHub<ChatHub>("/chatHub");
 
+// API Controller'larý
 app.MapControllers();
 
 app.Run();
+

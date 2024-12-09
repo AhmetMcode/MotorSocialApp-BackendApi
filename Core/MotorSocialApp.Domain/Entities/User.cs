@@ -24,5 +24,6 @@ namespace MotorSocialApp.Domain.Entities
         public ICollection<Post> Posts { get; set; } = new List<Post>(); // Kullanıcının postları
         public ICollection<PostLike> Likes { get; set; } = new List<PostLike>(); // Kullanıcının beğenileri
         public ICollection<PostComment> Comments { get; set; } = new List<PostComment>(); // Kullanıcının yorumları
+        public ICollection<UserChatGroupConnection> ChatGroups { get; set; } = new List<UserChatGroupConnection>(); // Kullanıcının yorumları
     }
 }

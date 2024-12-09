@@ -3,6 +3,7 @@ using MotorSocialApp.Domain.Entities;
 
 namespace MotorSocialApp.Api.Hubs
 {
+   
     public class ExploreHubService : Hub
     {
         // Yeni bir post eklendiğinde tüm istemcilere bildir.

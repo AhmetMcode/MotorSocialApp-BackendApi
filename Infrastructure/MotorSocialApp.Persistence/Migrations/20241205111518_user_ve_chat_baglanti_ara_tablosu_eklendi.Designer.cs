@@ -12,8 +12,8 @@ using MotorSocialApp.Persistence.Context;
 namespace MotorSocialApp.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241202131625_dbPostCategoryToAddPostCategoryFormFile")]
-    partial class dbPostCategoryToAddPostCategoryFormFile
+    [Migration("20241205111518_user_ve_chat_baglanti_ara_tablosu_eklendi")]
+    partial class user_ve_chat_baglanti_ara_tablosu_eklendi
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,6 +126,54 @@ namespace MotorSocialApp.Persistence.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("MotorSocialApp.Domain.Entities.ChatGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CurrentMemberCount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("GroupAdminUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("GroupDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroupIconPath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaxMemberCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UniqueId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChatGroups");
                 });
 
             modelBuilder.Entity("MotorSocialApp.Domain.Entities.Post", b =>
@@ -505,6 +553,13 @@ namespace MotorSocialApp.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MotorSocialApp.Domain.Entities.ChatGroup", b =>
+                {
+                    b.HasOne("MotorSocialApp.Domain.Entities.User", null)
+                        .WithMany("ChatGroups")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("MotorSocialApp.Domain.Entities.Post", b =>
                 {
                     b.HasOne("MotorSocialApp.Domain.Entities.PostCategoryFormFile", "PostCategory")
@@ -606,6 +661,8 @@ namespace MotorSocialApp.Persistence.Migrations
 
             modelBuilder.Entity("MotorSocialApp.Domain.Entities.User", b =>
                 {
+                    b.Navigation("ChatGroups");
+
                     b.Navigation("Comments");
 
                     b.Navigation("FollowedUsers");

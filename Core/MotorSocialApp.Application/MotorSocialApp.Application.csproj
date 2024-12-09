@@ -30,8 +30,4 @@
     <ProjectReference Include="..\MotorSocialApp.Domain\MotorSocialApp.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\AutoMapper\" />
-  </ItemGroup>
-
 </Project>

@@ -13,6 +13,9 @@ namespace MotorSocialApp.Persistence.Context
         public DbSet<UserPhoto> UserPhotos { get; set; }
         public DbSet<UserFollower> UserFollowers { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<ChatGroup> ChatGroups { get; set; }
+        public DbSet<UserChatGroupConnection> UserChatGroupConnections { get; set; }
+        public DbSet<GroupChatMessage> GroupChatMessages { get; set; }
        
         public DbSet<PostComment> PostComments { get; set; }
         public DbSet<PostLike> PostLikes { get; set; }

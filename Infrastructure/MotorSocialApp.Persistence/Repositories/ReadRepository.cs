@@ -66,5 +66,11 @@ namespace MotorSocialApp.Persistence.Repositories
             if (!enableTracking) Table.AsNoTracking();
             return Table.Where(predicate);
         }
+
+        public Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, bool enableTracking = false)
+        {
+            if (!enableTracking) Table.AsNoTracking();
+            return Table.AnyAsync(predicate);
+        }
     }
 }

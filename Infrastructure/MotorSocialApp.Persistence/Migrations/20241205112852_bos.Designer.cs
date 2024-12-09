@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotorSocialApp.Persistence.Context;
 
@@ -11,9 +12,11 @@ using MotorSocialApp.Persistence.Context;
 namespace MotorSocialApp.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241205112852_bos")]
+    partial class bos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,45 +166,14 @@ namespace MotorSocialApp.Persistence.Migrations
                     b.Property<Guid>("UniqueId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ChatGroups");
-                });
-
-            modelBuilder.Entity("MotorSocialApp.Domain.Entities.GroupChatMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("SenderUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("SenderUserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("SentAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GroupChatMessages");
                 });
 
             modelBuilder.Entity("MotorSocialApp.Domain.Entities.Post", b =>
@@ -482,6 +454,9 @@ namespace MotorSocialApp.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ChatGroupId")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("ChatGroupUniqueId")
                         .HasColumnType("uniqueidentifier");
 
@@ -496,7 +471,7 @@ namespace MotorSocialApp.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChatGroupUniqueId");
+                    b.HasIndex("ChatGroupId");
 
                     b.HasIndex("UserId");
 
@@ -610,6 +585,13 @@ namespace MotorSocialApp.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MotorSocialApp.Domain.Entities.ChatGroup", b =>
+                {
+                    b.HasOne("MotorSocialApp.Domain.Entities.User", null)
+                        .WithMany("ChatGroups")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("MotorSocialApp.Domain.Entities.Post", b =>
                 {
                     b.HasOne("MotorSocialApp.Domain.Entities.PostCategoryFormFile", "PostCategory")
@@ -670,14 +652,13 @@ namespace MotorSocialApp.Persistence.Migrations
             modelBuilder.Entity("MotorSocialApp.Domain.Entities.UserChatGroupConnection", b =>
                 {
                     b.HasOne("MotorSocialApp.Domain.Entities.ChatGroup", "ChatGroup")
-                        .WithMany("Users")
-                        .HasForeignKey("ChatGroupUniqueId")
-                        .HasPrincipalKey("UniqueId")
+                        .WithMany()
+                        .HasForeignKey("ChatGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MotorSocialApp.Domain.Entities.User", "User")
-                        .WithMany("ChatGroups")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -715,11 +696,6 @@ namespace MotorSocialApp.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MotorSocialApp.Domain.Entities.ChatGroup", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("MotorSocialApp.Domain.Entities.Post", b =>

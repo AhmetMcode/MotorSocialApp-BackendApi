@@ -11,6 +11,8 @@ namespace MotorSocialApp.Application.Interfaces.Repositories
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
             bool enableTracking = false);
 
+       
+
         Task<IList<T>> GetAllByPagingAsync(Expression<Func<T, bool>>? predicate = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
@@ -23,5 +25,6 @@ namespace MotorSocialApp.Application.Interfaces.Repositories
         IQueryable<T> Find(Expression<Func<T, bool>> predicate, bool enableTracking = false);
 
         Task<int> CountAsync(Expression<Func<T, bool>>? predicate = null);
+        Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, bool enableTracking = false);
     }
 }
