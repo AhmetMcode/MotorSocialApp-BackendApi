@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MotorSocialApp.Application.Interfaces.AutoMapper;
 using MotorSocialApp.Application.Interfaces.UnitOfWorks;
 using MotorSocialApp.Domain.Entities;
 using System;
@@ -13,10 +14,12 @@ namespace MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts
     public class GetPaginatedPostsQueryHandler : IRequestHandler<GetPaginatedPostsQueryRequest, GetPaginatedPostsQueryResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper mapper;
 
-        public GetPaginatedPostsQueryHandler(IUnitOfWork unitOfWork)
+        public GetPaginatedPostsQueryHandler(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         public async Task<GetPaginatedPostsQueryResponse> Handle(GetPaginatedPostsQueryRequest request, CancellationToken cancellationToken)
@@ -24,12 +27,17 @@ namespace MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts
             var query =await _unitOfWork.GetReadRepository<PostEntity>().GetAllAsync(orderBy:x=>x.OrderByDescending(p=>p.PostDate)); // Veritabanından Post verilerini alıyoruz
             var totalItems = query.Count(); // Toplam kayıt sayısını hesaplıyoruz
 
+          
+
+            // Sayfalama hesaplaması
             var posts = query
-                .Skip((request.Page - 1) * 20) // Sayfalama için atlama
-                .Take(20) // Sayfa başına kayıt sayısı
-                .ToList(); // Listeye dönüştürme
+                .Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .ToList();
+
 
             List<GetPaginatedPostsQueryResponse.PostDto> items = new List<GetPaginatedPostsQueryResponse.PostDto>();
+           
 
             foreach (var post in posts) {
                 var user = await _unitOfWork.GetReadRepository<User>().GetAsync(user => user.Id == post.UserId);
@@ -52,8 +60,8 @@ namespace MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts
             var response = new GetPaginatedPostsQueryResponse
             {
                 CurrentPage = request.Page,
-                TotalPages = (int)Math.Ceiling(totalItems / (double)20),
-                PageSize = 20,
+                TotalPages = (int)Math.Ceiling(totalItems / (double)request.PageSize),
+                PageSize = request.PageSize,
                 TotalItems = totalItems,
                 Items = items
             };

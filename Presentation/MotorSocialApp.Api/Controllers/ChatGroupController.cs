@@ -24,14 +24,14 @@ namespace MotorSocialApp.Api.Controllers
     {
 
         private readonly IMediator _mediator;
-        //private readonly IHubContext<ChatGroupHubService> _hubContext;
+        private readonly IHubContext<ChatHub> _hubContext;
   
 
-        public ChatGroupController(IMediator mediator)
+        public ChatGroupController(IMediator mediator, IHubContext<ChatHub> hubContext)
         {
             _mediator = mediator;
-            //this._hubContext = hubContext;
-           
+            this._hubContext = hubContext;
+            _hubContext = hubContext;
         }
 
         [Authorize]
@@ -43,15 +43,15 @@ namespace MotorSocialApp.Api.Controllers
             {
                 await _mediator.Send(request);
 
-                // SignalR üzerinden istemcilere bildir
-                //await _hubContext.Clients.All.SendAsync("ChatGroup", new
-                //{
+                //SignalR üzerinden istemcilere bildir
+                await _hubContext.Clients.All.SendAsync("ChatGroup", new
+                {
 
-                //    Name = request.Name,
-                //    GroupIconPath = request.GroupIconPath,
-                //    GroupAdminUserId = request.GroupAdminUserId,
-                //    GroupDescription = request.GroupDescription,
-                //});
+                    //Name = request.Name,
+                    //GroupIconPath = request.GroupIconPath,
+                    //GroupAdminUserId = request.GroupAdminUserId,
+                    //GroupDescription = request.GroupDescription,
+                });
 
 
                 return Ok();
@@ -85,15 +85,15 @@ namespace MotorSocialApp.Api.Controllers
             try
             {
                 await _mediator.Send(request);
-                // SignalR üzerinden istemcilere bildir
-                //await _hubContext.Clients.Groups(request.GroupId.ToString()).SendAsync("GroupChatMessage", new
-                //{
-                //    GroupId = request.GroupId,
-                //    SenderUserId = request.SenderUserId,
-                //    SenderUserName = request.SenderUserName,
-                //    Content = request.Content,
-                //    SentAt = request.SentAt,
-                //});
+                //SignalR üzerinden istemcilere bildir
+                await _hubContext.Clients.Groups(request.GroupId.ToString()).SendAsync("ChatMessage", new
+                {
+                    GroupId = request.GroupId,
+                    SenderUserId = request.SenderUserId,
+                    SenderUserName = request.SenderUserName,
+                    Content = request.Content,
+                    SentAt = request.SentAt,
+                });
                 return Ok();
             }
             catch (Exception ex)

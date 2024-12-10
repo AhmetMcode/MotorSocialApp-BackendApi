@@ -24,6 +24,10 @@ namespace MotorSocialApp.Application.Features.Group.Queries.GetGroupMessagesByGr
         public async Task<IList<GetGroupMessagesByGroupIdQueryResponse>> Handle(GetGroupMessagesByGroupIdQueryRequest request, CancellationToken cancellationToken)
         {
             var allMessages= await unitOfWork.GetReadRepository<GroupChatMessage>().GetAllAsync(m=>m.GroupId==request.GroupId);
+            foreach (var message in allMessages) {
+                var user = await unitOfWork.GetReadRepository<User>().GetAsync(x=>x.Id==message.SenderUserId);
+                message.SenderUserName = user.FullName;
+            }
             var response = mapper.Map<GetGroupMessagesByGroupIdQueryResponse, GroupChatMessage>(allMessages);
             return response;
         }

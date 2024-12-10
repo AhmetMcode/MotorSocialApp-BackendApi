@@ -9,7 +9,8 @@ namespace MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts
 {
     public class GetPaginatedPostsQueryRequest : IRequest<GetPaginatedPostsQueryResponse>
     {
-        public int Page { get; set; } = 1; // Varsayılan olarak 1. sayfa
+        public int Page { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
 
     }
 }

@@ -20,12 +20,12 @@ namespace MotorSocialApp.Api.Controllers
     public class PostController : ControllerBase
     {
         private readonly IMediator _mediator;
-        //private readonly IHubContext<ExploreHubService> _hubContext;
+        private readonly IHubContext<ExploreHubService> _hubContext;
 
-        public PostController(IMediator mediator)
+        public PostController(IMediator mediator, IHubContext<ExploreHubService> hubContext)
         {
             _mediator = mediator;
-            //this._hubContext = hubContext;
+            this._hubContext = hubContext;
         }
 
         [Authorize]
@@ -37,16 +37,11 @@ namespace MotorSocialApp.Api.Controllers
             {
                 await _mediator.Send(request);
 
-                //// SignalR üzerinden istemcilere bildir
-                //await _hubContext.Clients.All.SendAsync("ReceivePost", new
-                //{
-                //    UserId = request.UserId,
-                //    PostContentTitle = request.PostContentTitle,
-                //    PostContent = request.PostContent,
-                //    PostDate = DateTime.UtcNow, // Post'un oluşturulma zamanı
-                //    PostLocation = request.PostLocation,
-                //    PostCategoryId = request.PostCategoryId
-                //});
+                // SignalR üzerinden istemcilere bildir
+                await _hubContext.Clients.All.SendAsync("ReceivePost", new
+                {
+
+                });
 
 
                 return Ok();
@@ -55,30 +50,32 @@ namespace MotorSocialApp.Api.Controllers
 
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllPost( )
+        public async Task<IActionResult> GetAllPost()
         {
 
             try
             {
-                var result=await _mediator.Send(new GetAllPostQueryRequest { });
+                var result = await _mediator.Send(new GetAllPostQueryRequest { });
                 return Ok(result);
             }
-            catch (Exception ex) { 
-                return BadRequest(ex.Message); }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
 
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetPaginatedPosts(int page = 1)
+        public async Task<IActionResult> GetPaginatedPosts(int page = 1,int pageSize=10)
         {
             var request = new GetPaginatedPostsQueryRequest
             {
-                Page = page,
-               
+                Page = page,PageSize=pageSize
+
             };
 
             var result = await _mediator.Send(request);
@@ -87,7 +84,7 @@ namespace MotorSocialApp.Api.Controllers
         }
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetPaginatedPostsByCategoryId(int page = 1,int categoryId=0)
+        public async Task<IActionResult> GetPaginatedPostsByCategoryId(int page = 1, int categoryId = 0)
         {
             var request = new GetPaginatedPostsByCategoryIdQueryRequest
             {

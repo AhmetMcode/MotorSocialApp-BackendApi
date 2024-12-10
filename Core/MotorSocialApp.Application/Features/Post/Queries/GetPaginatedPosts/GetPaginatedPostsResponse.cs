@@ -1,4 +1,5 @@
-﻿using MotorSocialApp.Domain.Entities;
+﻿using MotorSocialApp.Domain.Common;
+using MotorSocialApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,10 @@ namespace MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts
         public int TotalPages { get; set; }
         public int PageSize { get; set; }
         public int TotalItems { get; set; }
-        public bool HasPreviousPage => CurrentPage > 1;
-        public bool HasNextPage => CurrentPage < TotalPages;
+       
         public List<PostDto> Items { get; set; } = new List<PostDto>();
-
-        public class PostDto
+         
+        public class PostDto : EntityBase
         {
             public Guid UserId { get; set; }
             public string UserPhotoPath { get; set; }
