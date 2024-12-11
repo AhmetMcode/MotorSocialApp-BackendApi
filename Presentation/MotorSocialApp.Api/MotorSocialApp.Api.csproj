@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\categoryPathIcons\" />
+    <Folder Include="wwwroot\customLocationIconsFolder\" />
     <Folder Include="wwwroot\postCategoryIcons\" />
     <Folder Include="wwwroot\profilePictures\" />
     <Folder Include="wwwroot\userPhotos\" />

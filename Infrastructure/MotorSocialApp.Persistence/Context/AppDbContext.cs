@@ -19,6 +19,7 @@ namespace MotorSocialApp.Persistence.Context
        
         public DbSet<PostComment> PostComments { get; set; }
         public DbSet<PostLike> PostLikes { get; set; }
+        public DbSet<CustomLocationIcon> CustomLocationIcons { get; set; }
         public DbSet<PostCategoryFormFile> PostCategories { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options) { }
