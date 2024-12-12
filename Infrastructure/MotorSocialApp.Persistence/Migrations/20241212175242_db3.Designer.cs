@@ -12,8 +12,8 @@ using MotorSocialApp.Persistence.Context;
 namespace MotorSocialApp.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241205113849_user_chat_connection")]
-    partial class user_chat_connection
+    [Migration("20241212175242_db3")]
+    partial class db3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -169,6 +169,111 @@ namespace MotorSocialApp.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ChatGroups");
+                });
+
+            modelBuilder.Entity("MotorSocialApp.Domain.Entities.CustomLocationIcon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IconName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IconPath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UploadedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CustomLocationIcons");
+                });
+
+            modelBuilder.Entity("MotorSocialApp.Domain.Entities.GroupChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("SenderUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SenderUserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GroupChatMessages");
+                });
+
+            modelBuilder.Entity("MotorSocialApp.Domain.Entities.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IconPath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("MarkerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("MotorSocialApp.Domain.Entities.Post", b =>
@@ -449,9 +554,6 @@ namespace MotorSocialApp.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ChatGroupId")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("ChatGroupUniqueId")
                         .HasColumnType("uniqueidentifier");
 
@@ -466,7 +568,7 @@ namespace MotorSocialApp.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChatGroupId");
+                    b.HasIndex("ChatGroupUniqueId");
 
                     b.HasIndex("UserId");
 
@@ -641,7 +743,8 @@ namespace MotorSocialApp.Persistence.Migrations
                 {
                     b.HasOne("MotorSocialApp.Domain.Entities.ChatGroup", "ChatGroup")
                         .WithMany("Users")
-                        .HasForeignKey("ChatGroupId")
+                        .HasForeignKey("ChatGroupUniqueId")
+                        .HasPrincipalKey("UniqueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

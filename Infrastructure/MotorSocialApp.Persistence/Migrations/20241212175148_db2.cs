@@ -5,7 +5,7 @@
 namespace MotorSocialApp.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class user_ve_chat_baglanti_ara_tablosu_eklendi : Migration
+    public partial class db2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

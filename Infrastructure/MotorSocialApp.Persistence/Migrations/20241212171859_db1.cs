@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MotorSocialApp.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class yenidb : Migration
+    public partial class db1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,6 +56,85 @@ namespace MotorSocialApp.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChatGroups",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UniqueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GroupDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GroupIconPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GroupAdminUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MaxMemberCount = table.Column<int>(type: "int", nullable: false),
+                    CurrentMemberCount = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatGroups", x => x.Id);
+                    table.UniqueConstraint("AK_ChatGroups_UniqueId", x => x.UniqueId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomLocationIcons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IconPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UploadedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IconName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomLocationIcons", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupChatMessages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SenderUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SenderUserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SentAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupChatMessages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    IconPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageBytes = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    MarkerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -182,33 +261,6 @@ namespace MotorSocialApp.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChatGroups",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UniqueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GroupDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GroupIconPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GroupAdminUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GroupAdminId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserIds = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ChatGroups", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ChatGroups_AspNetUsers_GroupAdminId",
-                        column: x => x.GroupAdminId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserFollowers",
                 columns: table => new
                 {
@@ -255,6 +307,34 @@ namespace MotorSocialApp.Persistence.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserChatGroupConnections",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChatGroupUniqueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserChatGroupConnections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserChatGroupConnections_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserChatGroupConnections_ChatGroups_ChatGroupUniqueId",
+                        column: x => x.ChatGroupUniqueId,
+                        principalTable: "ChatGroups",
+                        principalColumn: "UniqueId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -389,11 +469,6 @@ namespace MotorSocialApp.Persistence.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatGroups_GroupAdminId",
-                table: "ChatGroups",
-                column: "GroupAdminId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PostComments_PostId",
                 table: "PostComments",
                 column: "PostId");
@@ -421,6 +496,16 @@ namespace MotorSocialApp.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_UserId",
                 table: "Posts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserChatGroupConnections_ChatGroupUniqueId",
+                table: "UserChatGroupConnections",
+                column: "ChatGroupUniqueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserChatGroupConnections_UserId",
+                table: "UserChatGroupConnections",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -453,13 +538,22 @@ namespace MotorSocialApp.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ChatGroups");
+                name: "CustomLocationIcons");
+
+            migrationBuilder.DropTable(
+                name: "GroupChatMessages");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "PostComments");
 
             migrationBuilder.DropTable(
                 name: "PostLikes");
+
+            migrationBuilder.DropTable(
+                name: "UserChatGroupConnections");
 
             migrationBuilder.DropTable(
                 name: "UserFollowers");
@@ -472,6 +566,9 @@ namespace MotorSocialApp.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "ChatGroups");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
