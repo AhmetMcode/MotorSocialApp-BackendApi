@@ -4,7 +4,8 @@ using MotorSocialApp.Application;
 using MotorSocialApp.Infrastructure;
 using MotorSocialApp.Application.Exceptions;
 using Microsoft.OpenApi.Models;
-using MotorSocialApp.Api.Hubs; // SignalR için gerekli
+using MotorSocialApp.Api.Hubs;
+using Microsoft.AspNetCore.Server.Kestrel.Core; // SignalR için gerekli
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -108,6 +109,7 @@ app.UseAuthorization();
 // SignalR Hub Endpoint'leri
 app.MapHub<ExploreHubService>("/exploreHub");
 app.MapHub<ChatHub>("/chatHub");
+app.MapHub<LocationHub>("/locationHub");
 
 // API Controller'larý
 app.MapControllers();

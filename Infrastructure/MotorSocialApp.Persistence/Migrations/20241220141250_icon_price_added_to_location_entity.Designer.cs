@@ -12,8 +12,8 @@ using MotorSocialApp.Persistence.Context;
 namespace MotorSocialApp.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241212171859_db1")]
-    partial class db1
+    [Migration("20241220141250_icon_price_added_to_location_entity")]
+    partial class icon_price_added_to_location_entity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,6 +126,62 @@ namespace MotorSocialApp.Persistence.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("MotorSocialApp.Domain.Entities.AppMarkerIconToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TotalToken")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppMarkerIconTokens");
+                });
+
+            modelBuilder.Entity("MotorSocialApp.Domain.Entities.CallForHelp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CallForHelpEnum")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Lat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Lng")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CallForHelps");
                 });
 
             modelBuilder.Entity("MotorSocialApp.Domain.Entities.ChatGroup", b =>
@@ -255,9 +311,8 @@ namespace MotorSocialApp.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("ImageBytes")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                    b.Property<int>("IconPrice")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -476,6 +531,10 @@ namespace MotorSocialApp.Persistence.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DeviceToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -601,6 +660,36 @@ namespace MotorSocialApp.Persistence.Migrations
                     b.HasIndex("FollowedUserId");
 
                     b.ToTable("UserFollowers");
+                });
+
+            modelBuilder.Entity("MotorSocialApp.Domain.Entities.UserLastLocation2", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Lat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Lng")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLastLocation2s");
                 });
 
             modelBuilder.Entity("MotorSocialApp.Domain.Entities.UserPhoto", b =>
@@ -782,6 +871,17 @@ namespace MotorSocialApp.Persistence.Migrations
                     b.Navigation("Follower");
                 });
 
+            modelBuilder.Entity("MotorSocialApp.Domain.Entities.UserLastLocation2", b =>
+                {
+                    b.HasOne("MotorSocialApp.Domain.Entities.User", "User")
+                        .WithMany("UserLastLocation2s")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MotorSocialApp.Domain.Entities.UserPhoto", b =>
                 {
                     b.HasOne("MotorSocialApp.Domain.Entities.User", "User")
@@ -825,6 +925,8 @@ namespace MotorSocialApp.Persistence.Migrations
                     b.Navigation("Photos");
 
                     b.Navigation("Posts");
+
+                    b.Navigation("UserLastLocation2s");
                 });
 #pragma warning restore 612, 618
         }

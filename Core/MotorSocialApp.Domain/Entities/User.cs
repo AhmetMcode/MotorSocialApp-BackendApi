@@ -15,7 +15,9 @@ namespace MotorSocialApp.Domain.Entities
         public string? ProfilePhotoPath { get; set; }
         public string? Bio { get; set; }
         public int Rating { get; set; }
+        public string DeviceToken { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public AppMarkerIconToken TotalAppMarkerIconToken ;
 
         // Navigasyon özellikleri
         public ICollection<UserPhoto> Photos { get; set; } = new List<UserPhoto>();
@@ -25,5 +27,6 @@ namespace MotorSocialApp.Domain.Entities
         public ICollection<PostLike> Likes { get; set; } = new List<PostLike>(); // Kullanıcının beğenileri
         public ICollection<PostComment> Comments { get; set; } = new List<PostComment>(); // Kullanıcının yorumları
         public ICollection<UserChatGroupConnection> ChatGroups { get; set; } = new List<UserChatGroupConnection>(); // Kullanıcının yorumları
+        public ICollection<UserLastLocation2> UserLastLocation2s { get; set; } = new List<UserLastLocation2>(); // Kullanıcının yorumları
     }
 }

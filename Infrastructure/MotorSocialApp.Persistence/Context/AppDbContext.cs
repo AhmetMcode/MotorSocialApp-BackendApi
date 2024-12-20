@@ -17,11 +17,13 @@ namespace MotorSocialApp.Persistence.Context
         public DbSet<UserChatGroupConnection> UserChatGroupConnections { get; set; }
         public DbSet<GroupChatMessage> GroupChatMessages { get; set; }
         public DbSet<Location> Locations { get; set; }
-       
+        public DbSet<UserLastLocation2> UserLastLocation2s { get; set; }
         public DbSet<PostComment> PostComments { get; set; }
         public DbSet<PostLike> PostLikes { get; set; }
         public DbSet<CustomLocationIcon> CustomLocationIcons { get; set; }
         public DbSet<PostCategoryFormFile> PostCategories { get; set; }
+        public DbSet<CallForHelp> CallForHelps { get; set; }
+        public DbSet<AppMarkerIconToken> AppMarkerIconTokens { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options) { }
 

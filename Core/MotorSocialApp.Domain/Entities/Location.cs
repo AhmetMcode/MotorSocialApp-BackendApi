@@ -12,18 +12,20 @@ namespace MotorSocialApp.Domain.Entities
         public double Latitude { get; set; }    
         public double Longitude { get; set; }
         public string IconPath { get; set; }
+        public int IconPrice { get; set; }
         public string MarkerId { get; set; }
         public Guid UserId { get; set; }
 
         public Location() { }
 
-        public Location(double latitude, double longitude, string iconPath,string markerId, Guid userId)
+        public Location(double latitude, double longitude, string iconPath,string markerId, Guid userId, int iconPrice)
         {
             Latitude = latitude;
             Longitude = longitude;
             IconPath = iconPath;
             MarkerId = markerId;
             UserId = userId;
+            IconPrice = iconPrice;
         }
     }
 }

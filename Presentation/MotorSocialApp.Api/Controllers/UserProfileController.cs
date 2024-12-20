@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MotorSocialApp.Application.Features.UserProfile.Command.GetProfile;
 using MotorSocialApp.Application.Features.UserProfile.Command.UpdateProfile;
 using MotorSocialApp.Application.DTOs;
+using MotorSocialApp.Application.Features.DeviceTokenAddToUser.Command;
 
 namespace MotorSocialApp.Api.Controllers
 {
@@ -48,6 +49,22 @@ namespace MotorSocialApp.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while updating user profile.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating user profile." });
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddDeviceTokenToUser( DeviceTokenAddToUserCommandRequest request)
+        {
+            try
+            {
+                await _mediator.Send(request);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.ToString());
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating user profile." });
             }
         }

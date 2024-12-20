@@ -30,4 +30,8 @@
     <ProjectReference Include="..\MotorSocialApp.Domain\MotorSocialApp.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\CallForHelpFolder\Queries\" />
+  </ItemGroup>
+
 </Project>
