@@ -20,6 +20,11 @@ namespace MotorSocialApp.Api.Hubs
             await Clients.Group(message.GroupId.ToString()).SendAsync("ChatMessage",message.SenderUserName,message.Content,message.SentAt,message.SenderUserId);
         }
 
+        public async Task SendMessageToUser(GroupChatMessage message)
+        {
+            await Clients.Group(message.GroupId.ToString()).SendAsync("ChatMessage", message.SenderUserName, message.Content, message.SentAt, message.SenderUserId);
+        }
+
         public async Task CreateNewMessageGroup(ChatGroup chatGroup) {
             await Clients.All.SendAsync("ChatGroup",chatGroup);
         }

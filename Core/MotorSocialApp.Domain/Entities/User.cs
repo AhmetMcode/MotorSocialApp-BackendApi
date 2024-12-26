@@ -12,10 +12,10 @@ namespace MotorSocialApp.Domain.Entities
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
         public DateTime? BirthDate { get; set; }
-        public string? ProfilePhotoPath { get; set; }
+        public string? ProfilePhotoPath { get; set; } = "profilePictures/default_profile.jpg";
         public string? Bio { get; set; }
         public int Rating { get; set; }
-        public string DeviceToken { get; set; }
+        public string? DeviceToken { get; set; }
         public bool IsDeleted { get; set; } = false;
         public AppMarkerIconToken TotalAppMarkerIconToken ;
 

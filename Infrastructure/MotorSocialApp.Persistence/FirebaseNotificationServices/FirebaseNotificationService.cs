@@ -57,16 +57,26 @@ namespace MotorSocialApp.Persistence.FirebaseNotificationServices
 
             using (var httpClient = new HttpClient())
             {
-                httpClient.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", accessToken);
+                try
+                {
+                    httpClient.DefaultRequestHeaders.Authorization =
+                       new AuthenticationHeaderValue("Bearer", accessToken);
 
-                var jsonPayload = JsonSerializer.Serialize(payload);
-                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                    var jsonPayload = JsonSerializer.Serialize(payload);
+                    var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-                var firebaseUrl = $"https://fcm.googleapis.com/v1/projects/{_projectId}/messages:send";
-                var response = await httpClient.PostAsync(firebaseUrl, content);
+                    var firebaseUrl = $"https://fcm.googleapis.com/v1/projects/{_projectId}/messages:send";
+                    var response = await httpClient.PostAsync(firebaseUrl, content);
 
-                return response.IsSuccessStatusCode;
+                    return response.IsSuccessStatusCode;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.ToString());
+                }
+
+
+
             }
         }
     }

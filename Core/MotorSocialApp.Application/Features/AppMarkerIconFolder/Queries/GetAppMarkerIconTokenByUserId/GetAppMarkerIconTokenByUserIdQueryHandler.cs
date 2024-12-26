@@ -31,6 +31,14 @@ namespace MotorSocialApp.Application.Features.AppMarkerIconFolder.Queries.GetApp
 
             var totalToken = await unitOfWork.GetReadRepository<AppMarkerIconToken>().GetAsync(tkn=>tkn.UserId==user.Id);
 
+            if (totalToken == null)
+            {
+                return new GetAppMarkerIconTokenByUserIdQueryResponse
+                {
+                    TotalToken = 0
+                };
+            }
+
             return new GetAppMarkerIconTokenByUserIdQueryResponse
             {
                 TotalToken = totalToken.TotalToken

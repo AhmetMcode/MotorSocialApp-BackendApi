@@ -18,6 +18,7 @@ namespace MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPostsByCa
 
         public class PostDto
         {
+            public int Id { get; set; }
             public Guid UserId { get; set; }
             public string UserPhotoPath { get; set; }
             public string UserFullName { get; set; }

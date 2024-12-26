@@ -35,6 +35,10 @@ namespace MotorSocialApp.Application.Features.Auth.Command.Login
         }
         public async Task<LoginCommandResponse> Handle(LoginCommandRequest request, CancellationToken cancellationToken)
         {
+            if (request.Email == "" || request.Password=="" || request.Email == null || request.Password == null) {
+                throw new Exception("Tekrar deneyiniz.");
+            }
+            
             User user = await userManager.FindByEmailAsync(request.Email);
             bool checkPassword = await userManager.CheckPasswordAsync(user, request.Password);
 

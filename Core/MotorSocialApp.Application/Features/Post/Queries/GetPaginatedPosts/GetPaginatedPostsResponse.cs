@@ -17,8 +17,9 @@ namespace MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts
        
         public List<PostDto> Items { get; set; } = new List<PostDto>();
          
-        public class PostDto : EntityBase
+        public class PostDto 
         {
+            public int Id { get; set; }
             public Guid UserId { get; set; }
             public string UserPhotoPath { get; set; }
             public string UserFullName { get; set; }

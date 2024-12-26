@@ -44,6 +44,7 @@ namespace MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts
                 var category = await _unitOfWork.GetReadRepository<PostCategoryFormFile>().GetAsync(pc=>pc.Id==post.PostCategoryId);
                 var item = new GetPaginatedPostsQueryResponse.PostDto
                 {
+                    Id=post.Id,
                     UserId = post.UserId,
                     UserFullName = user.FullName,
                     UserPhotoPath=user.ProfilePhotoPath,

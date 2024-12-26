@@ -39,7 +39,7 @@ namespace MotorSocialApp.Application.Features.Location.Command.CreateLocation
                 }
             } catch  {
 
-                throw new Exception("Bu markerı eklemek için jeton satın almalısınız");
+                throw new Exception("Bu markerı eklemek için jeton satın almalısınız.");
             }
             
             

@@ -9,6 +9,7 @@ using MotorSocialApp.Application.Features.Post.Command.CreatePost;
 using MotorSocialApp.Application.Features.Post.Queries.GetAllPost;
 using MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPosts;
 using MotorSocialApp.Application.Features.Post.Queries.GetPaginatedPostsByCategoryId;
+using MotorSocialApp.Application.Features.Post.Queries.GetPostByPostId;
 using MotorSocialApp.Domain.Entities;
 using Newtonsoft.Json;
 
@@ -90,6 +91,20 @@ namespace MotorSocialApp.Api.Controllers
             {
                 Page = page,
                 CategoryId = categoryId
+            };
+
+            var result = await _mediator.Send(request);
+
+            return Ok(result);
+        }
+
+        //[Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetPostByPostId(int id)
+        {
+            var request = new GetPostByPostIdQueryRequest
+            {
+               Id= id
             };
 
             var result = await _mediator.Send(request);

@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.SignalR;
 using MotorSocialApp.Api.Hubs;
 using MotorSocialApp.Application.Features.Group.Command.CreateGroup;
 using MotorSocialApp.Application.Features.Group.Command.JoinGroup;
+using MotorSocialApp.Application.Features.Group.Command.LeaveGroup;
 using MotorSocialApp.Application.Features.Group.Command.SendMessageGroup;
 using MotorSocialApp.Application.Features.Group.Queries.GetAllChatGroups;
+using MotorSocialApp.Application.Features.Group.Queries.GetChatGroupByGroupId;
 using MotorSocialApp.Application.Features.Group.Queries.GetGroupMessagesByGroupId;
 using MotorSocialApp.Application.Features.Group.Queries.GetUserChatGroups;
 using MotorSocialApp.Application.Features.Post.Command.CreatePost;
@@ -76,6 +78,22 @@ namespace MotorSocialApp.Api.Controllers
             }
 
         }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> LeaveGroup(LeaveGroupCommandRequest request)
+        {
+
+            try
+            {
+                await _mediator.Send(request);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
 
         [Authorize]
         [HttpPost]
@@ -130,6 +148,26 @@ namespace MotorSocialApp.Api.Controllers
                 var result = await _mediator.Send(new GetUserChatGroupsQueryRequest
                 {
                     UserId = userId
+                });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+        
+        //[Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetChatGroupByGroupId(Guid groupId)
+        {
+
+            try
+            {
+                var result = await _mediator.Send(new GetChatGroupByGroupIdQueryRequest
+                {
+                      UniqueId=groupId
                 });
                 return Ok(result);
             }

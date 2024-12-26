@@ -3,6 +3,7 @@ using MotorSocialApp.Domain.Common;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Linq;
 
 
 namespace MotorSocialApp.Persistence.Repositories
@@ -72,5 +73,21 @@ namespace MotorSocialApp.Persistence.Repositories
             if (!enableTracking) Table.AsNoTracking();
             return Table.AnyAsync(predicate);
         }
+
+
+        public async Task<IList<T>> FindByContainsAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, bool enableTracking = false)
+        {
+            IQueryable<T> queryable = Table;
+
+            if (!enableTracking)
+                queryable = queryable.AsNoTracking();
+
+            // Where ile predicate'i uyguluyoruz
+            if (predicate is not null)
+                queryable = queryable.Where(predicate);
+
+            return await queryable.ToListAsync();
+        }
     }
+    
 }

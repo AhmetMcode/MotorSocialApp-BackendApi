@@ -5,6 +5,10 @@ using MotorSocialApp.Application.Features.UserProfile.Command.GetProfile;
 using MotorSocialApp.Application.Features.UserProfile.Command.UpdateProfile;
 using MotorSocialApp.Application.DTOs;
 using MotorSocialApp.Application.Features.DeviceTokenAddToUser.Command;
+using MotorSocialApp.Application.Features.UserProfile.Command.SearchUserProfile;
+using MotorSocialApp.Application.Features.UserProfile.Command.UserFollowerFolder;
+using MotorSocialApp.Application.Features.UserProfile.Command.UserFollowerRelationshipFolder;
+using MotorSocialApp.Application.Features.UserProfile.Command.UserUnfollowFolder;
 
 namespace MotorSocialApp.Api.Controllers
 {
@@ -55,12 +59,79 @@ namespace MotorSocialApp.Api.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddDeviceTokenToUser( DeviceTokenAddToUserCommandRequest request)
+        public async Task<IActionResult> AddDeviceTokenToUser(DeviceTokenAddToUserCommandRequest request)
         {
             try
             {
                 await _mediator.Send(request);
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating user profile." });
+            }
+        }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Follow(UserFollowerFolderCommandRequest request)
+        {
+            try
+            {
+                await _mediator.Send(request);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating user profile." });
+            }
+        }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Unfollow(UserUnfollowFolderCommandRequest request)
+        {
+            try
+            {
+                await _mediator.Send(request);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating user profile." });
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UserFollowerRelationship(UserFollowerRelationshipFolderCommandRequest request)
+        {
+            try
+            {
+                var response=await _mediator.Send(request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating user profile." });
+            }
+        }
+
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> SearchUserProfile(string searchParameter,Guid searcherUserId)
+        {
+            try
+            {
+                var response = await _mediator.Send(new SearchUserProfileCommandRequest
+                {
+                    SearchParameter = searchParameter,
+                    SeracherUserId= searcherUserId
+                });
+                return Ok(response);
             }
             catch (Exception ex)
             {

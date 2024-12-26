@@ -25,6 +25,7 @@ namespace MotorSocialApp.Persistence.Context
         public DbSet<CallForHelp> CallForHelps { get; set; }
         public DbSet<AppMarkerIconToken> AppMarkerIconTokens { get; set; }
 
+
         public AppDbContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

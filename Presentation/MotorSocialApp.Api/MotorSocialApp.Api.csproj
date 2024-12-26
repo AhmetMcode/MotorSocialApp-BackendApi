@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\postCategoryIcons\**" />
+    <Content Remove="wwwroot\postCategoryIcons\**" />
+    <EmbeddedResource Remove="wwwroot\postCategoryIcons\**" />
+    <None Remove="wwwroot\postCategoryIcons\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,8 +34,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\categoryPathIcons\" />
     <Folder Include="wwwroot\customLocationIconsFolder\" />
-    <Folder Include="wwwroot\postCategoryIcons\" />
-    <Folder Include="wwwroot\profilePictures\" />
+    <Folder Include="wwwroot\firebase_config_folder\" />
     <Folder Include="wwwroot\userPhotos\" />
   </ItemGroup>
 
